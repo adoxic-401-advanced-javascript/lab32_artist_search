@@ -1,33 +1,27 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect } from 'react';
 import { fetchLyrics } from '../services/api-call';
 import Lyrics from '../components/Lyrics';
+import { useParams } from 'react-router-dom';
 
-export default class LyricsDisplay extends Component {
-  static propTypes = {
-    match: PropTypes.shape({
-      params: PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        track: PropTypes.string.isRequired
-      }).isRequired
-    }).isRequired
-  }
+const LyricsDisplay = () => {
+  const [lyrics, setLyrics] = useState('');
 
-  componentDidMount() {
-    fetchLyrics(this.props.match.params.name, this.props.match.params.track)
+  let { name } = useParams();
+  let { track } = useParams();
+ 
+  useEffect(() => {
+    fetchLyrics(name, track)
       .then(res => {
-        this.setState({ lyrics: res });
+        setLyrics(res);
       });
-  }
-  state = {
-    lyrics: ''
-  }
+  });
+  
+  return (
+    <Lyrics lyrics={lyrics}
+      name={name}
+      title={track} />
+  );
 
-  render() {
-    return (
-      <Lyrics lyrics={this.state.lyrics}
-        name={this.props.match.params.name}
-        title={this.props.match.params.track} />
-    );
-  }
-}
+};
+
+export default LyricsDisplay;

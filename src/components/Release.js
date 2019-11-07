@@ -18,7 +18,7 @@ const Release = ({ title, date, image, name, id }) => {
 Release.propTypes = {
   title: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
-  date: PropTypes.string.isRequired,
+  date: PropTypes.string,
   image: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired
 };

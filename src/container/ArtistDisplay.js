@@ -1,80 +1,71 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import Artists from '../components/Artists';
 import Form from '../components/Form';
 import { fetchArtist } from '../services/api-call';
 import styles from './ArtistDisplay.css';
 
-export default class ArtistDisplay extends Component {
-  state = {
-    listOfArtists: [],
-    search: '',
-    offset: 0,
-    count: 0,
-    nextButton: false,
-    prevButton: true
+const ArtistDisplay = () => {
+  const [artistsArr, setArtistArr] = useState([]);
+  const [search, setSearch] = useState('');
+  const [offset, setOffset] = useState(0);
+  const [count, setCount] = useState(0);
+  const [next, setNext] = useState(false);
+  const [prev, setPrev] = useState(true);
 
-  }
 
-  handleSubmit = (event) => {
+  const onSubmit = (event) => {
     event.preventDefault();
-    this.setState({ offset: 0, prevButton: true, nextButton: false });
-    this.artistAPICall();
-  }
-
-  artistAPICall = () => {
-    fetchArtist(this.state.search, this.state.offset)
+    setPrev(true);
+    setOffset(0);
+    setNext(false);
+    artistAPICall();
+  };
+  
+  const artistAPICall = () => {
+    fetchArtist(search, offset)
       .then(artists => {
-        this.setState({ listOfArtists: artists[1], count: artists[0] });
+        setCount(artists[0]);
+        setArtistArr(artists[1]);
       });
-  }
+  };
 
-  handleChange = ({ target }) => {
-    this.setState({ search: target.value });
+  const handleChange = ({ target }) => {
+    setSearch(target.value);
+  };
 
-  }
+  useEffect(() => {
+    artistAPICall();
+    setPrev(false);
+    if(offset + 5 >= count) {
+      setNext(true);
+    }
+    if(offset === 0) {
+      setPrev(true);
+    }
+  }, [offset]);
 
-  handleClick = ({ target }) => {
+  const handleClick = ({ target }) => {
     let num;
     target.name === 'next' ? num = 5 : num = -5;
+    setOffset(offset + num);
     
-    this.setState(state => {
-      return {
-        offset: state.offset + num,
-        prevButton: false,
-        nextButton: false
-      };
-    }, () => {
+  };
 
-      if(this.state.offset + 5 >= this.state.count) {
-        this.setState({ nextButton: true });
-      }
-      if(target.name === 'prev' && this.state.offset === 0) {
-        this.setState({ prevButton: true });
-      }
-    });
-  }
+  return (
+    <div className={styles.ArtistDisplay}>
+      <p>Please search for your favorite musical artists</p>
+      <Form
+        handleSubmit={onSubmit}
+        handleChange={handleChange}
+        search={search}
+      />
+      <Artists
+        artistArray={artistsArr} />
+      <button name="prev" disabled={prev} onClick={handleClick}>Previous</button>
+      <button name="next" disabled={next} onClick={handleClick}>Next</button>
+    </div>
+  );
 
-  componentDidUpdate(prevProps, prevState) {
-    if(prevState.offset !== this.state.offset) {
-      this.artistAPICall();
-    }
-  }
+};
 
-
-  render() {
-    return (
-      <div className={styles.ArtistDisplay}>
-        <p>Please search for your favorite musical artists</p>
-        <Form
-          handleSubmit={this.handleSubmit}
-          handleChange={this.handleChange}
-          search={this.state.search}
-        />
-        <Artists
-          artistArray={this.state.listOfArtists} />
-        <button name="prev" disabled={this.state.prevButton} onClick={this.handleClick}>Previous</button>
-        <button name="next" disabled={this.state.nextButton} onClick={this.handleClick}>Next</button>
-      </div>
-    );
-  }
-}
+export default ArtistDisplay;

@@ -1,20 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { fetchLyrics } from '../services/api-call';
+import React from 'react';
 import Lyrics from '../components/Lyrics';
 import { useParams } from 'react-router-dom';
+import useLyrics from './useLyrics';
+import { useState } from 'react';
 
 const LyricsDisplay = () => {
   const [lyrics, setLyrics] = useState('');
 
   let { name } = useParams();
   let { track } = useParams();
- 
-  useEffect(() => {
-    fetchLyrics(name, track)
-      .then(res => {
-        setLyrics(res);
-      });
-  });
+  useLyrics(setLyrics, name, track);
   
   return (
     <Lyrics lyrics={lyrics}

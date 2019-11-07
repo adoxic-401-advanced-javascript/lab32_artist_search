@@ -21,12 +21,11 @@ const ReleaseDisplay = () => {
         setCount(releases[0]);
       });
   };
-
   
   useEffect(() => {
     getReleases();
     if(count === -1) return;
-    
+
     setNext(offset + 5 >= count);
     setPrev(offset === 0);
   }, [offset, count]);

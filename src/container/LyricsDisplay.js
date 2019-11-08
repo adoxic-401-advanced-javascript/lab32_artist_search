@@ -13,7 +13,6 @@ const LyricsDisplay = () => {
       name={name}
       title={track} />
   );
-
 };
 
 export default LyricsDisplay;

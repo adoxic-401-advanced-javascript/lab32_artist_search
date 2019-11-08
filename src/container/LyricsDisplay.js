@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Lyrics from '../components/Lyrics';
 import { useParams } from 'react-router-dom';
 import useLyrics from './useLyrics';
-import { useState } from 'react';
 
 const LyricsDisplay = () => {
   const [lyrics, setLyrics] = useState('');

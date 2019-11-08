@@ -1,34 +1,25 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useEffect } from 'react';
 import { fetchTracks } from '../services/api-call';
 import Tracks from '../components/Tracks';
+import { useParams } from 'react-router-dom';
 
-export default class TrackDisplay extends Component {
-  state = {
-    tracks: []
-  }
+const TrackDisplay = () => {
+  let [tracks, setTracks] = useState([]);
+  let { name } = useParams();
+  let { id } = useParams();
 
-  componentDidMount() {
-    fetchTracks(this.props.match.params.id)
+  useEffect(() => {
+    fetchTracks(id)
       .then(res => {
-        this.setState({ tracks: res });
+        setTracks(res);
       });
-  }
+  });
 
-  static propTypes = {
-    match: PropTypes.shape({
-      params: PropTypes.shape({
-        id: PropTypes.string.isRequired,
-        name: PropTypes.string.isRequired
-      }).isRequired
-    }).isRequired
-  }
+  return (
+    <div>
+      <Tracks songs={tracks} name={name}/>
+    </div>
+  );
+};
 
-  render(){
-    return (
-      <div>
-        <Tracks songs={this.state.tracks} name={this.props.match.params.name}/>
-      </div>
-    );
-  }
-}
+export default TrackDisplay();

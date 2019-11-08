@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Artists from '../components/Artists';
 import Form from '../components/Form';
-import { fetchArtist } from '../services/api-call';
 import styles from './ArtistDisplay.css';
+import useArtists from './useArtists';
 
 const ArtistDisplay = () => {
   const [artistsArr, setArtistArr] = useState([]);
@@ -18,15 +18,7 @@ const ArtistDisplay = () => {
     setPrev(true);
     setOffset(0);
     setNext(false);
-    artistAPICall();
-  };
-  
-  const artistAPICall = () => {
-    fetchArtist(search, offset)
-      .then(artists => {
-        setCount(artists[0]);
-        setArtistArr(artists[1]);
-      });
+    useArtists(search, offset, setCount, setArtistArr);
   };
 
   const handleChange = ({ target }) => {
@@ -34,7 +26,7 @@ const ArtistDisplay = () => {
   };
 
   useEffect(() => {
-    artistAPICall();
+    useArtists(search, offset, setCount, setArtistArr);
     setPrev(false);
     if(offset + 5 >= count) {
       setNext(true);

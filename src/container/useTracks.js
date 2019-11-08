@@ -1,11 +1,16 @@
-import fetchTracks from '../services/api-call';
+import { fetchTracks } from '../services/api-call';
+import { useState, useEffect } from 'react';
 
-const useTracks = (search, setArtistArr) => {
-  fetchTracks(search, offset)
-    .then(artists => {
-      setCount(artists[0]);
-      setArtistArr(artists[1]);
-    });
+
+const useTracks = (id) => {
+  let [tracks, setTracks] = useState([]);
+  useEffect(() => {
+    fetchTracks(id)
+      .then(tracks => {
+        setTracks(tracks);
+      });
+  });
+  return tracks;
 };
 
 export default useTracks;

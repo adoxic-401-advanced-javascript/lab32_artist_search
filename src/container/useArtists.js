@@ -1,4 +1,4 @@
-import fetchArtist from '../services/api-call';
+import { fetchArtist } from '../services/api-call';
 
 const useArtists = (search, offset, setCount, setArtistArr) => {
   fetchArtist(search, offset)

@@ -1,19 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { fetchTracks } from '../services/api-call';
+import React from 'react';
 import Tracks from '../components/Tracks';
 import { useParams } from 'react-router-dom';
+import useTracks from './useTracks';
 
 const TrackDisplay = () => {
-  let [tracks, setTracks] = useState([]);
   let { name } = useParams();
   let { id } = useParams();
 
-  useEffect(() => {
-    fetchTracks(id)
-      .then(res => {
-        setTracks(res);
-      });
-  });
+  const tracks = useTracks(id);
 
   return (
     <div>
@@ -22,4 +16,4 @@ const TrackDisplay = () => {
   );
 };
 
-export default TrackDisplay();
+export default TrackDisplay;

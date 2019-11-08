@@ -16,7 +16,7 @@ exports[`ArtistDisplay component renders ArtistDisplay 1`] = `
     artistArray={Array []}
   />
   <button
-    disabled={true}
+    disabled={false}
     name="prev"
     onClick={[Function]}
   >

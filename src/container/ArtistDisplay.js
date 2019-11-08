@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Artists from '../components/Artists';
 import Form from '../components/Form';
 import styles from './ArtistDisplay.css';

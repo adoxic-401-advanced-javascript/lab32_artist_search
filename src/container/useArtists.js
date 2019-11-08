@@ -1,15 +1,16 @@
 import { fetchArtist } from '../services/api-call';
 import { useState } from 'react';
 
-const useArtists = (search, offset) => {
+const useArtists = (search) => {
   let [artists, setArtists] = useState([]);
   let [count, setCount] = useState(0);
 
-  const getArtists = (search, offset) => {
-    fetchArtist(search, offset)
+  const getArtists = () => {
+    fetchArtist(search, 0)
       .then(artists => {
         setArtists(artists[1]);
         setCount(artists[0]);
+        console.log('is working');
       });
   };
 
@@ -18,7 +19,6 @@ const useArtists = (search, offset) => {
     getArtists();
   };
 
-  console.log(offset);
   return [onSubmit, artists, count, getArtists];
 };
 

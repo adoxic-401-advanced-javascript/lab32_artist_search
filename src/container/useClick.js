@@ -6,29 +6,28 @@ const useClick = (count, search, getArtists) => {
   const [prev, setPrev] = useState(false);
 
   const handleClick = ({ target }) => {
-    console.log('is alive');
     let num;
     target.name === 'next' ? num = 5 : num = -5;
     setOffset(offset + num);
-    
+    console.log(offset, num);
   };
 
-
-
-  useEffect(() => {
-    getArtists(search, offset);
-    setPrev(false);
-    setNext(false);
+  const adjust = () => {
     if(offset + 5 >= count) {
       setNext(false);
     }
     if(offset === 0) {
       setPrev(false);
     }
+  };
+
+  useEffect(() => {
+    getArtists(search, offset);
+    adjust();
+    
   }, [offset]);
 
-  console.log(prev, next, offset);
-  return [offset, handleClick, prev, next];
+  return [handleClick, prev, next];
 };
 
 export default useClick;
